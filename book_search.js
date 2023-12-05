@@ -82,6 +82,92 @@ const twentyLeaguesOut = {
     ]
 }
 
+/** Jared's Objects for Testing */
+
+// a list that has one book that has two pages
+const bookTwoPages = [
+  {
+      "Title": "A Two Page Book",
+      "ISBN": "2",
+      "Content": [
+          {
+              "Page": 1,
+              "Line": 1,
+              "Text": "This is the beginning of a book."
+          },
+          {
+              "Page": 1,
+              "Line": 2,
+              "Text": "It is a very short book."
+          },
+          {
+              "Page": 1,
+              "Line": 3,
+              "Text": "It has very few pages."
+          },
+          {
+              "Page": 2,
+              "Line": 1,
+              "Text": "But, it has big text!"
+          },
+          {
+              "Page": 2,
+              "Line": 1,
+              "Text": "Which means it fits on two pages!"
+          },
+      ] 
+  }
+];
+
+// a list that has two books which each have one page
+const booksOnePage = [
+  {
+    "Title": "One Page Book",
+    "ISBN": "1",
+    "Content": [
+        {
+            "Page": 1,
+            "Line": 12,
+            "Text": "-where in the middle of page one of book 1."
+        },
+        {
+            "Page": 1,
+            "Line": 14,
+            "Text": "Picking up here and there."
+        },
+    ] 
+  },
+  {
+    "Title": "One Page Book The Sequel",
+    "ISBN": "12",
+    "Content": [
+        {
+            "Page": 1,
+            "Line": 24,
+            "Text": "Outside in the dark, it is scary!"
+        },
+        {
+            "Page": 1,
+            "Line": 46,
+            "Text": "Good thing I am inside with a book."
+        },
+    ] 
+  },
+];
+
+const booksNoContent = [
+  {
+    "Title": "Empty Book 1",
+    "ISBN": "0",
+    "Content": []
+  },
+  {
+    "Title": "Empty Book 2",
+    "ISBN": "02",
+    "Content": []
+  },
+]
+
 /*
  _   _ _   _ ___ _____   _____ _____ ____ _____ ____  
 | | | | \ | |_ _|_   _| |_   _| ____/ ___|_   _/ ___| 
@@ -116,4 +202,157 @@ if (test2result.Results.length == 1) {
     console.log("FAIL: Test 2");
     console.log("Expected:", twentyLeaguesOut.Results.length);
     console.log("Received:", test2result.Results.length);
+}
+
+/* ---------------------------------------------------------- */
+
+const basicPositiveOut1 = {
+  "SearchTerm": "book",
+  "Results": [
+    {
+        "ISBN": "2",
+        "Page": 1,
+        "Line": 1
+    },
+    {
+        "ISBN": "2",
+        "Page": 1,
+        "Line": 2
+    }
+  ]
+};
+
+const testBasicPositive1 = findSearchTermInBooks("book", bookTwoPages);
+if (JSON.stringify(basicPositiveOut1) === JSON.stringify(testBasicPositive1)) {
+  console.log("PASS: Basic Positive 1");
+} else {
+  console.log("FAIL: Basic Positive 1");
+  console.log("Expected:", basicPositiveOut1);
+  console.log("Received:", testBasicPositive1);
+}
+
+const basicPositiveOut2 = {
+  "SearchTerm": "dark",
+  "Results": [
+    {
+        "ISBN": "12",
+        "Page": 1,
+        "Line": 24
+    }
+  ]
+};
+
+const testBasicPositive2 = findSearchTermInBooks("dark", booksOnePage);
+if (JSON.stringify(basicPositiveOut2) === JSON.stringify(testBasicPositive2)) {
+  console.log("PASS: Basic Positive 1");
+} else {
+  console.log("FAIL: Basic Positive 1");
+  console.log("Expected:", basicPositiveOut2);
+  console.log("Received:", testBasicPositive2);
+}
+
+const basicNegativeOut1 = {
+  "SearchTerm": "foo",
+  "Results": []
+};
+
+const testBasicNegative1 = findSearchTermInBooks("foo", bookTwoPages);
+if (JSON.stringify(basicNegativeOut1) === JSON.stringify(testBasicNegative1)) {
+  console.log("PASS: Basic Negative 1");
+} else {
+  console.log("FAIL: Basic Negative 1");
+  console.log("Expected:", basicNegativeOut1);
+  console.log("Received:", testBasicNegative1);
+}
+
+const basicNegativeOut2 = {
+  "SearchTerm": "bar",
+  "Results": []
+};
+
+const testBasicNegative2 = findSearchTermInBooks("bar", booksOnePage);
+if (JSON.stringify(basicNegativeOut2) === JSON.stringify(testBasicNegative2)) {
+  console.log("PASS: Basic Negative 2");
+} else {
+  console.log("FAIL: Basic Negative 2");
+  console.log("Expected:", basicNegativeOut2);
+  console.log("Received:", testBasicNegative2);
+}
+
+const upperAndLowerCaseDifferentOut = {
+  "SearchTerm": "Book",
+  "Results": []
+};
+
+const testUpperAndLowerCaseDifferent = findSearchTermInBooks("Book", bookTwoPages);
+if (JSON.stringify(upperAndLowerCaseDifferentOut) === JSON.stringify(testUpperAndLowerCaseDifferent)) {
+  console.log("PASS: Upper and lower case different");
+} else {
+  console.log("FAIL: Upper and lower case different");
+  console.log("Expected:", upperAndLowerCaseDifferentOut);
+  console.log("Received:", testUpperAndLowerCaseDifferent);
+}
+
+const testEmptyInputEmptyOutput = findSearchTermInBooks("bar", []);
+if (JSON.stringify(basicNegativeOut2) === JSON.stringify(testEmptyInputEmptyOutput)) {
+  console.log("PASS: Empty input => empty output");
+} else {
+  console.log("FAIL: Empty input => empty output");
+  console.log("Expected:", basicNegativeOut2);
+  console.log("Received:", emptyInputEmptyOutput);
+}
+
+
+const testEmptyBookEmptyOutput = findSearchTermInBooks("bar", booksNoContent);
+if (JSON.stringify(basicNegativeOut2) === JSON.stringify(testEmptyBookEmptyOutput)) {
+  console.log("PASS: Empty books => empty output");
+} else {
+  console.log("FAIL: Empty books => empty output");
+  console.log("Expected:", basicNegativeOut2);
+  console.log("Received:", testEmptyBookEmptyOutput);
+}
+
+const partsOfWordsOut = {
+  "SearchTerm": "side",
+  "Results": [
+    {
+      "ISBN": "12",
+      "Page": 1,
+      "Line": 24
+    },
+    {
+      "ISBN": "12",
+      "Page": 1,
+      "Line": 46
+    }
+  ]
+};
+
+const testPartsOfWords = findSearchTermInBooks("side", booksOnePage);
+if (JSON.stringify(testPartsOfWords) === JSON.stringify(partsOfWordsOut)) {
+  console.log("PASS: parts of words");
+} else {
+  console.log("FAIL: parts of words");
+  console.log("Expected:", partsOfWordsOut);
+  console.log("Received:", testPartsOfWords);
+}
+
+const phrasesOut = {
+  "SearchTerm": "beginning of a book",
+  "Results": [
+    {
+      "ISBN": "2",
+      "Page": 1,
+      "Line": 1,
+    }
+  ]
+}
+
+const testPhrases = findSearchTermInBooks("beginning of a book", bookTwoPages);
+if (JSON.stringify(testPhrases) === JSON.stringify(phrasesOut)) {
+  console.log("PASS: phrases");
+} else {
+  console.log("FAIL: phrases");
+  console.log("Expected:", phrasesOut);
+  console.log("Received:", testPhrases);
 }
