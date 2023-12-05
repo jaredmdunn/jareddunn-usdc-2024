@@ -19,13 +19,28 @@
  * @returns {JSON} - Search results.
  * */ 
  function findSearchTermInBooks(searchTerm, scannedTextObj) {
-    /** You will need to implement your search and 
-     * return the appropriate object here. */
-
-    var result = {
-        "SearchTerm": "",
+    // result object to store the instances found
+    const result = {
+        "SearchTerm": searchTerm,
         "Results": []
     };
+
+    // Loop through all of the books in the scannedTextObj
+    for (const bookObj of scannedTextObj) {
+      // Loop through all of the page-line objects in the "Content"
+      // of the book object
+      for (const pageLineObj of bookObj["Content"]) {
+        // if the search term is found in the text, add
+        // a new result object to the Results list
+        if (pageLineObj["Text"].includes(searchTerm)) {
+          result["Results"].push({
+            "ISBN": bookObj["ISBN"],
+            "Page": pageLineObj["Page"],
+            "Line": pageLineObj["Line"]
+          });
+        }
+      }
+    }
     
     return result; 
 }
